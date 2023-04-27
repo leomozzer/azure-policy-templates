@@ -1,32 +1,3 @@
-# data "azurerm_subscription" "current" {}
-
-# resource "azurerm_policy_definition" "example" {
-#     display_name =  "some definition"
-#   name        = "only-deploy-in-westeurope"
-#   policy_type = "Custom"
-#   mode        = "All"
-
-#   policy_rule = <<POLICY_RULE
-#  {
-#     "if": {
-#       "not": {
-#         "field": "location",
-#         "equals": "westeurope"
-#       }
-#     },
-#     "then": {
-#       "effect": "Deny"
-#     }
-#   }
-# POLICY_RULE
-# }
-
-# resource "azurerm_resource_policy_assignment" "example" {
-#   name                 = "example-policy-assignment"
-#   policy_definition_id = azurerm_policy_definition.example.id
-#   subscription_id      = data.azurerm_subscription.current.id
-# }
-
 data "azurerm_subscription" "current" {}
 
 resource "azurerm_policy_definition" "example" {
