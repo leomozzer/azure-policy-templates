@@ -1,6 +1,6 @@
 {
     "properties":{
-        "displayName": "Configure Log Analytics workspace to centralize logs and monitoring",
+        "displayName": "Centralized Log Analytics Workspace",
         "policyType": "Custom",
         "mode": "All",
         "description": "Deploy resource group containing Log Analytics workspace and to centralize logs and monitoring",
@@ -23,7 +23,7 @@
                     "displayName": "workspaceName",
                     "description": "Provide name for log analytics workspace"
                 },
-                "defaultValue": "central-logs-monitoring"
+                "defaultValue": "central-law"
             },
             "workspaceRegion": {
                 "type": "String",

@@ -1,9 +1,9 @@
 {
   "properties": {
-    "displayName": "Diagnostic settings to Log Analytics workspace",
+    "displayName": "Diagnostic settings to Key Vaults",
     "policyType": "Custom",
     "mode": "Indexed",
-    "description": "Deploys the diagnostic settings for all resources to stream resource logs to a Log Analytics workspace when any resource which is missing this diagnostic settings is created or updated.",
+    "description": "Deploys the diagnostic settings for all key vaults to stream resource logs to a Log Analytics workspace when any resource which is missing this diagnostic settings is created or updated.",
     "metadata": {
       "category": "Monitoring",
       "version": "1.0.0"
@@ -16,9 +16,7 @@
           "description": "Enable or disable the execution of the policy"
         },
         "allowedValues": [
-          "DeployIfNotExists",
-          "AuditIfNotExists",
-          "Disabled"
+          "DeployIfNotExists"
         ],
         "defaultValue": "DeployIfNotExists"
       },
@@ -47,8 +45,7 @@
           "description": "Whether to enable metrics stream to the Log Analytics workspace - True or False"
         },
         "allowedValues": [
-          true,
-          false
+          true
         ],
         "defaultValue": true
       },
@@ -59,32 +56,15 @@
           "description": "Whether to enable logs stream to the Log Analytics workspace - True or False"
         },
         "allowedValues": [
-          true,
-          false
+          true 
         ],
         "defaultValue": true
       }
     },
     "policyRule": {
       "if": {
-        "anyOf": [
-          {
-            "field": "type",
-            "equals": "Microsoft.Storage/storageAccounts"
-          },
-          {
-            "field": "type",
-            "equals": "Microsoft.KeyVault/vaults"
-          },
-          {
-            "field": "type",
-            "equals": "Microsoft.Web/sites"
-          },
-          {
-            "field": "type",
-            "equals": "Microsoft.DBforMySQL/servers"
-          }
-        ]
+        "field": "type",
+        "equals": "Microsoft.KeyVault/vaults"
       },
       "then": {
         "effect": "[parameters('effect')]",
@@ -136,23 +116,6 @@
                 "variables": {},
                 "resources": [
                   {
-                    "type": "Microsoft.Storage/storageAccounts/providers/diagnosticSettings",
-                    "apiVersion": "2021-05-01-preview",
-                    "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
-                    "condition": "[equals(greater(length(resourceId('Microsoft.Storage/storageAccounts', parameters('resourceName'))), 0), true())]",
-                    "location": "[parameters('location')]",
-                    "dependsOn": [],
-                    "properties": {
-                      "workspaceId": "[parameters('logAnalytics')]",
-                      "metrics": [
-                        {
-                          "category": "AllMetrics",
-                          "enabled": "[parameters('metricsEnabled')]"
-                        }
-                      ]
-                    }
-                  },
-                  {
                     "type": "Microsoft.KeyVault/vaults/providers/diagnosticSettings",
                     "apiVersion": "2017-05-01-preview",
                     "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
@@ -174,50 +137,6 @@
                         },
                         {
                           "category": "AzurePolicyEvaluationDetails",
-                          "enabled": "[parameters('logsEnabled')]"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "type": "Microsoft.Web/sites/providers/diagnosticSettings",
-                    "apiVersion": "2017-05-01-preview",
-                    "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
-                    "condition": "[equals(greater(length(resourceId('Microsoft.Web/sites', parameters('resourceName'))), 0), true())]",
-                    "location": "[parameters('location')]",
-                    "dependsOn": [],
-                    "properties": {
-                      "workspaceId": "[parameters('logAnalytics')]",
-                      "metrics": [
-                        {
-                          "category": "AllMetrics",
-                          "enabled": "[parameters('metricsEnabled')]"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "type": "Microsoft.DBforMySQL/servers/providers/diagnosticSettings",
-                    "apiVersion": "2017-05-01-preview",
-                    "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
-                    "condition": "[equals(greater(length(resourceId('Microsoft.DBforMySQL/servers', parameters('resourceName'))), 0), true())]",
-                    "location": "[parameters('location')]",
-                    "dependsOn": [],
-                    "properties": {
-                      "workspaceId": "[parameters('logAnalytics')]",
-                      "metrics": [
-                        {
-                          "category": "AllMetrics",
-                          "enabled": "[parameters('metricsEnabled')]"
-                        }
-                      ],
-                      "logs": [
-                        {
-                          "category": "MySqlSlowLogs",
-                          "enabled": "[parameters('logsEnabled')]"
-                        },
-                        {
-                          "category": "MySqlAuditLogs",
                           "enabled": "[parameters('logsEnabled')]"
                         }
                       ]
