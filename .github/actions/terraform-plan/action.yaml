@@ -1,0 +1,30 @@
+name: 'Terraform Plan'
+description: "Performs the terraform plan"
+
+inputs:
+ # Credentials for deployment to AWS
+  AZURE_CREDENTIALS:
+    description: "Azure Credentials"
+    required: true
+  AZURE_CLI_VERSION:
+    description: "Azure cli version"
+    required: false
+    default: 'latest'
+
+runs:
+  using: "composite"
+  steps:
+  - name: Azure Login
+    shell: bash
+    uses: azure/login@v1
+    with:
+      creds: ${{ inputs.AZURE_CREDENTIALS }}
+  
+  - name: Azure CLI script
+    shell: bash
+    uses: azure/CLI@v1
+    with:
+      azcliversion: ${{ inputs.AZURE_CLI_VERSION }}
+      inlineScript: |
+        az account show
+        az storage -h

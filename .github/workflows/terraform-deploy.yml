@@ -1,0 +1,42 @@
+
+name: 'Terraform Deploy'
+on:
+  push:
+    branches:
+      - main
+
+env:
+ # Credentials for deployment to AWS
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #AWS defaul region
+  AWS_DEFAULT_REGION: us-east-1
+
+jobs:
+  plan:
+    strategy:
+      matrix:
+        stage: [dev]
+    runs-on: ubuntu-latest
+    defaults:
+     run:
+       shell: bash
+       # We keep Terraform files in the terraform directory.
+       working-directory: ./terraform-live
+    concurrency: ${{ matrix.stage }}
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: jungwinter/split@v2
+      id: split
+      with:
+        msg: ${{ github.repository }}
+        separator: "/"
+
+    - uses: "./.github/actions/azure-backend"
+      with:
+        AZURE_SP: ${{ secrets.AZURE_SP }}
+        RESOURCE_GROUP_NAME: "policy-as-code-tfstate-${{ matrix.stage }}-rg"
+        RESOURCE_GROUP_LOCATION: "eastus"
+        TAGS: '"UseCase=Terraform" "Stage=${{ github.job }}" "Deployed=GitHub Actions" Repository=${{ steps.split.outputs._1 }} "RunNumber=${{ github.run_number }}"'
+        STORAGE_ACCOUNT_NAME: "stacpolicyascode${{ matrix.stage }"
