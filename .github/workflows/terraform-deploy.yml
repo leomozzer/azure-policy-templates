@@ -39,4 +39,4 @@ jobs:
         RESOURCE_GROUP_NAME: "policy-as-code-tfstate-${{ matrix.stage }}-rg"
         RESOURCE_GROUP_LOCATION: "eastus"
         TAGS: '"UseCase=Terraform" "Stage=${{ github.job }}" "Deployed=GitHub Actions" Repository=${{ steps.split.outputs._1 }} "RunNumber=${{ github.run_number }}"'
-        STORAGE_ACCOUNT_NAME: "stacpolicyascode${{ matrix.stage }"
+        STORAGE_ACCOUNT_NAME: "stacpolicyascode${{ matrix.stage }}"
