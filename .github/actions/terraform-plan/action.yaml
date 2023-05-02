@@ -26,13 +26,11 @@ runs:
   using: "composite"
   steps:
     - name: Azure Login
-      shell: bash
       uses: azure/login@v1
       with:
         creds: ${{ inputs.AZURE_SP }}
-    
+
     - name: Azure CLI script
-      shell: bash
       uses: azure/CLI@v1
       with:
         azcliversion: ${{ inputs.AZURE_CLI_VERSION }}
