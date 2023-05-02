@@ -6,11 +6,10 @@ on:
       - main
 
 env:
- # Credentials for deployment to AWS
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #AWS defaul region
-  AWS_DEFAULT_REGION: us-east-1
+  ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
 
 jobs:
   plan:
