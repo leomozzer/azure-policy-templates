@@ -23,7 +23,7 @@ variable "policy_definition_parameters" {
 }
 
 variable "create_assignment" {
-  type = bool
+  type    = bool
   default = false
 }
 

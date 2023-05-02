@@ -11,6 +11,6 @@ variable "policy_definition_location" {
 }
 
 variable "create_assignment" {
-  type = bool
+  type    = bool
   default = false
 }

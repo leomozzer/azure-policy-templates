@@ -450,16 +450,16 @@
 # ]
 
 subscription_policy_rules = [
-    {
-        name = "centralized-law"
-        create_assignment = true
-        file_name = "ResourceGroupAndLogAnalyticsToCentralizeMonitoring"
-        location = "eastus"
-    },
-    {
-        name = "diagnostic-settings-centralized-law"
-        create_assignment = true
-        file_name = "DiagnosticSettingsForAllResources"
-        location = "eastus"
-    }
+  {
+    name              = "centralized-law"
+    create_assignment = true
+    file_name         = "ResourceGroupAndLogAnalyticsToCentralizeMonitoring"
+    location          = "eastus"
+  },
+  {
+    name              = "diagnostic-settings-centralized-law"
+    create_assignment = true
+    file_name         = "DiagnosticSettingsForAllResources"
+    location          = "eastus"
+  }
 ]
