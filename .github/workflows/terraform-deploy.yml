@@ -5,12 +5,12 @@ on:
     branches:
       - main
 
-# env:
-#  # Credentials for deployment to AWS
-#   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#   #AWS defaul region
-#   AWS_DEFAULT_REGION: us-east-1
+env:
+ # Credentials for deployment to AWS
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #AWS defaul region
+  AWS_DEFAULT_REGION: us-east-1
 
 jobs:
   plan:
@@ -40,3 +40,11 @@ jobs:
         RESOURCE_GROUP_LOCATION: "eastus"
         TAGS: '"UseCase=Terraform" "Stage=${{ github.job }}" "Deployed=GitHub Actions" Repository=${{ steps.split.outputs._1 }} "RunNumber=${{ github.run_number }}"'
         STORAGE_ACCOUNT_NAME: "stacpolicyascode${{ matrix.stage }}"
+
+    - uses: "./.github/actions/terraform-plan"
+      with:
+        WORKING_DIR: "./"
+        AZURE_SP: ${{ secrets.AZURE_SP }}
+        STORAGE_ACCOUNT_NAME: "stacpolicyascode${{ matrix.stage }}"
+        STATE_FILE: "policy-as-code.tfstate"
+        STAGE: "${{ matrix.stage }}"

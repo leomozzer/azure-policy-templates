@@ -17,6 +17,10 @@ inputs:
   STORAGE_ACCOUNT_NAME:
     description: "Name of the storage account"
     required: true
+  AZURE_CLI_VERSION:
+    description: "Azure cli version"
+    required: false
+    default: 'latest'
 
 runs:
   using: "composite"
@@ -29,14 +33,14 @@ runs:
     - name: Create RG
       uses: azure/CLI@v1
       with:
-        azcliversion: 2.30.0
+        azcliversion: ${{ inputs.AZURE_CLI_VERSION }}
         inlineScript: |
-          az group create --location ${{ inputs.RESOURCE_GROUP_LOCATION }} --resource-group ${{ inputs.RESOURCE_GROUP_NAME }}
+          az group create --location ${{ inputs.RESOURCE_GROUP_LOCATION }} --resource-group ${{ inputs.RESOURCE_GROUP_NAME }} --tags ${{ inputs.TAGS }}
 
     - name: Create storage account for Terraform
       uses: azure/CLI@v1
       with:
-        azcliversion: 2.30.0
+        azcliversion: ${{ inputs.AZURE_CLI_VERSION }}
         inlineScript: |
           az storage account create --resource-group ${{ inputs.RESOURCE_GROUP_NAME }} --name ${{ inputs.STORAGE_ACCOUNT_NAME }} --sku Standard_LRS --kind StorageV2 --encryption-services blob --access-tier Cool --allow-blob-public-access false
           az storage container create --name states --account-name ${{ inputs.STORAGE_ACCOUNT_NAME }}
