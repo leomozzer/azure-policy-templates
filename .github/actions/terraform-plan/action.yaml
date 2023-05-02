@@ -18,6 +18,9 @@ inputs:
   STORAGE_ACCOUNT_NAME:
     description: "Name of the storage account"
     required: true
+  CONTAINER_NAME:
+    description: "Container name"
+    required: true
   STATE_FILE:
     description: "Name of the state files"
     required: true
