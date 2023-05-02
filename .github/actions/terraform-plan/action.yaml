@@ -12,6 +12,9 @@ inputs:
   AZURE_SP:
     description: "Credentials of the Azure SP"
     required: true
+  RESOURCE_GROUP_NAME:
+    description: "Resource Group of storage account"
+    required: true
   STORAGE_ACCOUNT_NAME:
     description: "Name of the storage account"
     required: true
