@@ -9,6 +9,14 @@
       "version": "1.0.0"
     },
     "parameters": {
+      "environment": {
+        "type": "String",
+        "metadata": {
+            "displayName": "environment",
+            "description": "Provide environment name"
+        },
+        "defaultValue": "prod"
+      },
       "effect": {
         "type": "String",
         "metadata": {
@@ -94,6 +102,9 @@
                 "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
                 "contentVersion": "1.0.0.0",
                 "parameters": {
+                  "environment": {
+                    "type": "string"
+                  },
                   "resourceName": {
                     "type": "string"
                   },
@@ -119,11 +130,10 @@
                     "type": "Microsoft.Storage/storageAccounts/providers/diagnosticSettings",
                     "apiVersion": "2021-05-01-preview",
                     "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
-                    "condition": "[equals(greater(length(resourceId('Microsoft.Storage/storageAccounts', parameters('resourceName'))), 0), true())]",
                     "location": "[parameters('location')]",
                     "dependsOn": [],
                     "properties": {
-                      "workspaceId": "[parameters('logAnalytics')]",
+                      "workspaceId": "[concat(split(resourceId('Microsoft.Storage/storageAccounts', parameters('resourceName')), '/resourceGroups/')[0], '/resourceGroups/', concat(parameters('logAnalytics'), '-', parameters('environment'), '-rg'), '/providers/microsoft.operationalinsights/workspaces/', parameters('logAnalytics'), '-', parameters('environment'))]",
                       "metrics": [
                         {
                           "category": "AllMetrics",
@@ -149,6 +159,9 @@
                 }
               },
               "parameters": {
+                "environment": {
+                  "value": "[parameters('environment')]"
+                },
                 "location": {
                   "value": "[field('location')]"
                 },

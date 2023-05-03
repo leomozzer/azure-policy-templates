@@ -119,11 +119,10 @@
                     "type": "Microsoft.KeyVault/vaults/providers/diagnosticSettings",
                     "apiVersion": "2017-05-01-preview",
                     "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
-                    "condition": "[equals(greater(length(resourceId('Microsoft.KeyVault/vaults', parameters('resourceName'))), 0), true())]",
                     "location": "[parameters('location')]",
                     "dependsOn": [],
                     "properties": {
-                      "workspaceId": "[parameters('logAnalytics')]",
+                      "workspaceId": "[concat(split(resourceId('Microsoft.KeyVault/vaults', parameters('resourceName')), '/resourceGroups/')[0], '/resourceGroups/', concat(parameters('logAnalytics'), '-', parameters('environment'), '-rg'), '/providers/microsoft.operationalinsights/workspaces/', parameters('logAnalytics'), '-', parameters('environment'))]",
                       "metrics": [
                         {
                           "category": "AllMetrics",
