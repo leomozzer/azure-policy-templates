@@ -50,9 +50,9 @@ runs:
       run: terraform fmt -check -recursive -diff ${{ inputs.WORKING_DIR}}
       continue-on-error: true
       shell: bash
-      working-directory: ${{ inputs.WORKING_DIR }}
+      working-directory: ${{ inputs.WORKING_DIR }}/terraform-live
 
-    - name: Create backend file
+    - name: Ensure ${{ inputs.STAGE }}.tfvars exists
       shell: bash
       run: |
         touch ${{ inputs.WORKING_DIR }}/terraform-live/${{ inputs.STAGE }}.tfvars
@@ -88,7 +88,7 @@ runs:
         cwd: ${{ inputs.WORKING_DIR }}
         files: |
           ./terraform-live
-        outPath: ${{ inputs.WORKING_DIR }}/terraform-live/terraform-live-${{ inputs.STAGE }}.tar
+        outPath: terraform-live-${{ inputs.STAGE }}.tar
 
     - name: Copy ${{ inputs.STAGE }} live plan to Storage
       uses: azure/CLI@v1
@@ -109,7 +109,7 @@ runs:
         cwd: ${{ inputs.WORKING_DIR }}
         files: |
           ./terraform-modules
-        outPath: ${{ inputs.WORKING_DIR }}/terraform-modules/terraform-modules-${{ inputs.STAGE }}.tar
+        outPath: terraform-modules-${{ inputs.STAGE }}.tar
 
     - name: Copy ${{ inputs.STAGE }} modules to Storage
       uses: azure/CLI@v1

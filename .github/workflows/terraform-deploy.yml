@@ -62,7 +62,7 @@ jobs:
 
     - uses: "./.github/actions/terraform-plan"
       with:
-        WORKING_DIR: "./"
+        WORKING_DIR: "."
         AZURE_SP: ${{ secrets.AZURE_SP }}
         RESOURCE_GROUP_NAME: "policy-as-code-tfstate-${{ matrix.stage }}-rg"
         STORAGE_ACCOUNT_NAME: "stacpolicyascode${{ matrix.stage }}"
