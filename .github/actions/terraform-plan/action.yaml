@@ -88,7 +88,7 @@ runs:
         cwd: ${{ inputs.WORKING_DIR }}
         files: |
           ./terraform-live
-        outPath: terraform-live-${{ inputs.STAGE }}.tar
+        outPath: terraform-live-${{ inputs.STAGE }}-${{ github.run_number }}.tar
 
     - name: Copy ${{ inputs.STAGE }} live plan to Storage
       uses: azure/CLI@v1
@@ -97,8 +97,8 @@ runs:
         inlineScript: |
           az storage blob upload \
             --container-name plans \
-            --file terraform-live-${{ inputs.STAGE }}.tar \
-            --name terraform-live-${{ inputs.STAGE }}.tar \
+            --file terraform-live-${{ inputs.STAGE }}-${{ github.run_number }}.tar \
+            --name terraform-live-${{ inputs.STAGE }}-${{ github.run_number }}.tar \
             --account-name ${{ inputs.STORAGE_ACCOUNT_NAME }}
 
     - name: Archive terraform-modules
@@ -109,7 +109,7 @@ runs:
         cwd: ${{ inputs.WORKING_DIR }}
         files: |
           ./terraform-modules
-        outPath: terraform-modules-${{ inputs.STAGE }}.tar
+        outPath: terraform-modules-${{ inputs.STAGE }}-${{ github.run_number }}.tar
 
     - name: Copy ${{ inputs.STAGE }} modules to Storage
       uses: azure/CLI@v1
@@ -118,6 +118,6 @@ runs:
         inlineScript: |
           az storage blob upload \
             --container-name plans \
-            --file terraform-modules-${{ inputs.STAGE }}.tar \
-            --name terraform-modules-${{ inputs.STAGE }}.tar \
+            --file terraform-modules-${{ inputs.STAGE }}-${{ github.run_number }}.tar \
+            --name terraform-modules-${{ inputs.STAGE }}-${{ github.run_number }}.tar \
             --account-name ${{ inputs.STORAGE_ACCOUNT_NAME }}
