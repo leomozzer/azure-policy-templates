@@ -22,12 +22,15 @@ jobs:
 
     steps:
       - name: Clone repo
-        uses: actions/checkout@master
+        uses: actions/checkout@v3
 
       - name: tfsec
-        uses: aquasecurity/tfsec-pr-commenter-action@v1.2.0
-        with:
-          github_token: ${{ github.token }}
+        shell: bash
+        run: |
+          mkdir TFSecReport
+          docker pull aquasec/tfsec:latest
+          docker run --rm -v ./terraform-live:/src aquasec/tfsec ./src --format JUnit > ./TFSecReport/TFSec-Report.xml
+          docker run --rm -v ./terraform-live:/src aquasec/tfsec ./src
 
   plan:
     strategy:
